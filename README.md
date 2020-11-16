@@ -59,8 +59,9 @@ String my_variable = "Whats up?!";
 First, we declare the variable's type. In this case, because we want to store a piece of text, the type of our variable is going to be a `String`. You need to specify the type of every single variable you create, or else Java won't know what type of data should be stored in the variable.
 Next, we declared the variable's name: `my_variable`. This is the name that you use in your code to refer to this variable. You can name your variable almost anything you want, but there are some rules about naming variables.
 1. No spaces in variable names. Use underscores instead.
-2. A variable name cannot start with a number. Example: `1motor` is invalid.
-3. A variable cannot be a [reserved keyword](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html)
+2. No special characters like `!@#$%^&*(` etc...
+3. A variable name cannot start with a number. Example: `1motor` is invalid.
+4. A variable cannot be a [reserved keyword](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/_keywords.html)
 
 Also, most lines of code in Java end with a semicolon (`;`). More on that later.
 
@@ -230,3 +231,7 @@ Everything you need to know about everything. The documentation is actually pret
 
 [FTC Java GitHub Repo](https://github.com/FIRST-Tech-Challenge/FtcRobotController)
 All the FTC Java code, and some more resources are there in the readme.
+
+[EXAMPLE CODE](https://github.com/trc492/FtcSamples/tree/master/FtcSampleCode/src/main/java/samples) GREAT sample code for everything you'll ever need to do (well, almost). Use it.
+
+[MORE EXAMPLE CODE](https://github.com/trc492/FtcSamples/tree/master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples) More sample code (from the same repo).
