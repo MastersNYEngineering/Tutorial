@@ -1,5 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+/* -- IMPORTS -- */
+/*
+    Here is where you actually import the FTC library. Whenever you need something,
+    check the docs and find the import for it, and put the import here.
+*/
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -65,6 +71,11 @@ public class OctoBot extends OpMode {
 
     // Here are some very helpful custom methods to initialize different
     // components given their hardware address (the id/name on the phone).
+    
+    // These initialization methods are very handy to quickly initialize motors,
+    // sensors, and other stuff like that. Make sure to change
+    // RUN_WITHOUT_ENCODERS to RUN_WITHOUT_ENCODERS if you need encoders.
+    // Same is true with REVERSE and FORWARD.
    
     // init_motor initializes a motor given its hardware address.
     private DcMotor init_motor(String id) {
@@ -137,14 +148,16 @@ public class OctoBot extends OpMode {
         driverpoten = hardwareMap.get(AnalogInput.class, "driverpoten");
     }
 
+    // This is the move function. It does not actually set the power to
+    // the wheels. All this method does it *calculate* how much power needs to be
+    // sent to the wheel for it to move properly, and then it *returns* those values.
+    // Once you write this method, it becomes a black box; you don't need to think about
+    // how it works in order to use it. You simply call move() to get the motor
+    // movement calculations. Keep in mind that because this is a holonomic robot,
+    // the calculations are going to be more complex than a tank drive (or anything else)
     double[] move() {
         double x_left_joy;
         double y_left_joy;
-        // if (currentDriver == Driver.MATT) {
-        //     x_left_joy = -gamepad1.left_stick_x;
-        //     y_left_joy = gamepad1.left_stick_y;
-        // } else {
-        // }
 
         x_left_joy = -gamepad1.right_stick_x;
         y_left_joy = gamepad1.right_stick_y;
@@ -191,7 +204,7 @@ public class OctoBot extends OpMode {
     }
 
     // lift powers the 4 bar lift.
-    double lift() {
+    void lift() {
         // Get the input from the gamepad
         boolean right_bumper = gamepad1.left_bumper;
         boolean left_bumper  = gamepad1.right_bumper;
@@ -199,10 +212,10 @@ public class OctoBot extends OpMode {
         // Power the motors accordingly
         double power = 0.85;
         if (right_bumper) {
-            lift0.setPower(power); // down I think
+            lift0.setPower(power);
             lift1.setPower(power);
         }
-        else if (left_bumper) { // up i think
+        else if (left_bumper) {
             lift0.setPower(-power);
             lift1.setPower(-power);
         }
@@ -210,22 +223,21 @@ public class OctoBot extends OpMode {
             lift0.setPower(0);
             lift1.setPower(0);
         }
-
-        return 0;
     }
 
     // shovel powers thes shovel.
     void shovel() {
+        // Read from the gamepad
         double rt = gamepad1.right_trigger;
         double lt = gamepad1.left_trigger;
 
         if (rt > 0) { // If the right trigger is being pressed
             shovel0.setPosition(-.5);
             shovel1.setPosition(-.5);
-        } else if (lt > 0) {
+        } else if (lt > 0) { // If the left trigger is being pressed
             shovel0.setPosition(0.5);
             shovel1.setPosition(0.5);
-        } else if (lt == 0 && rt == 0) {
+        } else if (lt == 0 && rt == 0) { // If nothing is being pressed
             shovel0.setPosition(0);
             shovel1.setPosition(0);
         }
@@ -236,50 +248,59 @@ public class OctoBot extends OpMode {
 
     // turn calculates the turning speed.
     double turn() {
-        double x_right_joy;
-        // if (currentDriver == Driver.MATT) {
-        //     x_right_joy = gamepad1.right_stick_x;
-        // } else {
-        // }
-        x_right_joy = gamepad1.left_stick_x;
-        telemetry.addData("INNER TURN", x_right_joy);
-
+        double x_left_joy = gamepad1.left_stick_x; // Read from the controller
+        // IDK why we did this
         double speed = Range.clip(x_right_joy, -1.0, 1.0) * TURN_BUFFER * MAX_SPEED;
-
         return speed;
     }
 
+    /* -- REQUIRED METHODS -- */
+    /*
+       Here are the required methods for any OpMode.
+       Any method marked with @Override is a required method.
+       If you do not declare these methods, the code will not compile!
+       So even if you don't need to put anything in a method (like in init_loop),
+       you still need to declare it, and leave the function body empty.
+    */
+
+    // You will probably never need to use this. This loop will continuously run
+    // once you hit "init" on the phone, and will stop running once you hit "start"
     @Override
     public void init_loop() {
     }
 
+    // This is the code that runs when you click "start", right before running the
+    // main game loop (below).
     @Override
     public void start() {
         runtime.reset();
     }
 
+    // The main game loop. This is a very important method!!! This is the method where
+    // everything happens! This is also a very special method: it runs continuously.
+    // This method will automatically run many many times per second. So, you need to
+    // get into the mindset of thinking that this loop is always running, always
+    // repeating itself. The code will continuously run from top to bottom, top to bottom
+    // forever (or until you click stop on the phone).
     @Override
     public void loop() {
-        // Set the current driver
-        currentDriver = (driverpoten.getVoltage() <= 1) ? Driver.MATT : Driver.ELLA;
-
         // Calculate moving and turning speeds
         double[] move = move();
         double turn = turn();
 
+        // Sum the turn speed and move speed (to get the final motor speed)
         double w0_vel = move[0] + turn;
         double w1_vel = move[1] + turn;
         double w2_vel = move[2] + turn;
         double w3_vel = move[3] + turn;
 
-        // Power the motors with the appropriate speeds
+        // Power the motors with the calculated speed
         w0.setPower(w0_vel);
         w1.setPower(w1_vel);
         w2.setPower(w2_vel);
         w3.setPower(w3_vel);
 
-        // Some debugging info
-        telemetry.addData("driverpoten", driverpoten.getVoltage());
+        // Print some debugging info
         telemetry.addData("turn", turn);
 
         // Power the shovel and the lift
@@ -287,6 +308,8 @@ public class OctoBot extends OpMode {
         shovel();
     }
 
+    // This is the code that runs when you click stop. It should forcefully
+    // stop all moving parts (for safety reasons).
     @Override
     public void stop() {
         // Forcefully stop all of the motors
