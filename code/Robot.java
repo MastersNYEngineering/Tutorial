@@ -23,11 +23,13 @@ import java.util.*;
 // The @TeleOp allows you to set the robot name that will appear on the phone
 @TeleOp(name="Robot Name", group="Examples")
 public class OctoBot extends OpMode {
+
     /* -- GLOBAL VARIABLES -- */
+
     /*
         Here is where you declare all global variables
-        or any data that your robot needs.
-        You also declare all of the motors and sensors here...
+        or any data that your robot needs. These data points are called "fields"
+        You also declare all of the motors and sensors here.
         anything and everything that needs to be controlled by the code.
     */
 
@@ -63,6 +65,7 @@ public class OctoBot extends OpMode {
     private double STOP_VAL;
 
     /* -- INTERNAL METHODS -- */
+
     /*
        Here are where you define all the methods that your robot will
        use. You write the code for the required methods, and you
@@ -186,6 +189,10 @@ public class OctoBot extends OpMode {
         double w2_power = -speed * Math.sin(theta_3);
         double w3_power = -speed * Math.sin(theta_4);
 
+        // Print out the calculated values for debugging purposes.
+        // Telemetry.addData() is basically just System.out.println(), but the
+        // text is displayed ON THE PHONE, because there is no "console" like there
+        // is in traditional Java programs.
         telemetry.addData(" -- POWERS IN CALCULATION --", "");
         telemetry.addData("w0_power", w0_power);
         telemetry.addData("w1_power", w1_power);
@@ -203,7 +210,7 @@ public class OctoBot extends OpMode {
         return speeds;
     }
 
-    // lift powers the 4 bar lift.
+    // lift() powers the 4 bar lift. This actually sets the motor power.
     void lift() {
         // Get the input from the gamepad
         boolean right_bumper = gamepad1.left_bumper;
@@ -225,36 +232,54 @@ public class OctoBot extends OpMode {
         }
     }
 
-    // shovel powers thes shovel.
+    // shovel() powers the shovel. This actually sets the motor power.
     void shovel() {
         // Read from the gamepad
         double rt = gamepad1.right_trigger;
         double lt = gamepad1.left_trigger;
 
+        // NOTE: Recall that these motors are VEX393s, so they have weird behavior.
         if (rt > 0) { // If the right trigger is being pressed
+            // Move both the shovel motors up (NOTE: you will need to play around
+            // with the value, but just make sure that you send the same value to 
+            // both motors)
             shovel0.setPosition(-.5);
             shovel1.setPosition(-.5);
         } else if (lt > 0) { // If the left trigger is being pressed
+            // Move both the shovel motors down. See note above, too.
             shovel0.setPosition(0.5);
             shovel1.setPosition(0.5);
         } else if (lt == 0 && rt == 0) { // If nothing is being pressed
+            // This is kind of weird, because VEX393s are very weird within FTC.
+            // Setting both motors to 0 will actually make the 393s hold their position,
+            // whereever they are. This was the behavior that we wanted. Without this
+            // branch of the if-statement, gravity would just bring the shovel down
+            // when nothing was being pressed. But we wanted the shovel to stay in
+            // place when nothing was being pressed.
             shovel0.setPosition(0);
             shovel1.setPosition(0);
         }
 
+        // Print out the trigger values for debugging purposes
         telemetry.addData("right trigger", rt);
         telemetry.addData("left trigger", lt);
     }
 
-    // turn calculates the turning speed.
+    // turn() calculates the turning speed. This does not send power to the motor,
+    // it just calculates the value, and returns it.
     double turn() {
         double x_left_joy = gamepad1.left_stick_x; // Read from the controller
-        // IDK why we did this
+     
+        // Map the left joystick x value to the range [-1, 1], and multiply
+        // by the buffer speeds.
         double speed = Range.clip(x_right_joy, -1.0, 1.0) * TURN_BUFFER * MAX_SPEED;
+
+        // Return the value
         return speed;
     }
 
     /* -- REQUIRED METHODS -- */
+
     /*
        Here are the required methods for any OpMode.
        Any method marked with @Override is a required method.
@@ -273,7 +298,7 @@ public class OctoBot extends OpMode {
     // main game loop (below).
     @Override
     public void start() {
-        runtime.reset();
+        runtime.reset(); // Reset the clock
     }
 
     // The main game loop. This is a very important method!!! This is the method where
@@ -284,26 +309,34 @@ public class OctoBot extends OpMode {
     // forever (or until you click stop on the phone).
     @Override
     public void loop() {
-        // Calculate moving and turning speeds
+        // Calculate moving and turning speeds. By calling move() and turn() in loop(),
+        // they will constantly be running, until the robot stops.
         double[] move = move();
         double turn = turn();
 
         // Sum the turn speed and move speed (to get the final motor speed)
+        // This is only necessary for holonomic robots. For non-holonomic drives,
+        // you will often only need one move() function, not a turn function.
+        // For example, think about tank drives. They cannot turn and move at the same
+        // time, so only one method is necessary.
         double w0_vel = move[0] + turn;
         double w1_vel = move[1] + turn;
         double w2_vel = move[2] + turn;
         double w3_vel = move[3] + turn;
 
-        // Power the motors with the calculated speed
+        // Power the motors with the calculated speed.
+        // This is what actually powers the motors
         w0.setPower(w0_vel);
         w1.setPower(w1_vel);
         w2.setPower(w2_vel);
         w3.setPower(w3_vel);
 
-        // Print some debugging info
+        // Print the turn speed (for debugging)
         telemetry.addData("turn", turn);
 
         // Power the shovel and the lift
+        // Note, these methods are being called continuously, so they are always
+        // going to be running.
         lift();
         shovel();
     }
