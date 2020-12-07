@@ -1,40 +1,44 @@
+
 # FTC Robot Coding Tutorial
-## Hi
-This repository (fancy word for a code project on GitHub) serves to teach you everything you need to know about how to code an FTC robot. [This GitHub organization](https://github.com/mastersnyengineering) also has all of the robot code we've written for the past three years. So, if you're ever stuck, look through the past code on the org (warning: it's very spaghetti).
+## Welcome
+This repository/repo (fancy word for a code project on GitHub) serves to teach you everything you need to know about how to code an FTC robot. [This GitHub organization](https://github.com/mastersnyengineering) also has all of the robot code we've written for the past three years. So, if you're ever stuck, look through the past code on the org (warning: it's very spaghetti).
 
 ## Table of Contents
-Intro: talk about how to write code: the philosophy of copy and paste and a note on memorizing syntax.
 
-[Java Crash Course](#Java Crash Course)
- * [Variables](#Variables)
- * [Printing & Comments](#Printing and Comments)
- * [Control flow](#Control Flow)
- * Arrays
- * Functions, Methods, and Classes
+[Getting Started](#Getting)
+
+[Java Crash Course](#java-crash-course)
+ * [Variables](#variables)
+ * [Printing & Commenting](#printing-and-comments)
+ * [Control flow](#control-flow)
+ * [Arrays](#arrays)
+ * [Functions, Methods, and Classes](#functions-methods-and-classes)
  
-Actually coding the robots:
+[Coding FTC Robots](#coding-ftc-robots)
  * Intro
  * Explanation of the basic boilerplate
  * How to do common stuff
  * More useful boilerplate and explanation
  * How to do more common (slightly more advanced) stuff
  
-Phones:
+[Phones](#Phones)
  * How to use the phones
  * How to set the name (id) of different components
 
 [Resources](#Resources)
 
-### Getting Started
+## Getting Started
 First, you're going to need a code editor, a program that makes it easy to edit source code files. The best code editor is [Visual Studio Code](https://code.visualstudio.com/). It is very easy to download, and will be your best friend for all your coding adventures. Another really great editor is [Sublime Text](https://www.sublimetext.com/), which is more lightweight. If you want to easily run the code you write, you can use [repl.it](https://repl.it) for now.
 
 Usually, we use OnBotJava, which is FTC's way of writing code for robots. The robot controller phone (the one on the robot) hosts a web server on it. You connect your laptop to that web server (through wifi), and then you edit code in the browser. This is good because it makes it super easy to compile all the Java code and run it on the robot with the click of a button. However, it is bad because it means that we can't use it right now, because we only have two phones and many people on the robotics team.
 
 So, when we are learning how to code robots right now, we aren't going to have the nice features of OnBotJava, such as error messages. Unfortunately, there's no *simple* way for you to *run* your code without OnBotJava. Don't fret; you'll still learn how to code robots with just a plain text editor.
 
-<hr />
+### Coding - a high-level overview
 
-### Java Crash Course
+/* TODO: talk about how to write code: the philosophy of copy and paste and a note on memorizing syntax.*/
+
+## Java Crash Course
 Really, the code for robots isn't very complicated. You are not going to need to use any advanced programming skills. All you need to know to code a great robot is the basics: variables, inputs/outputs, control flow, and classes/objects.
 
 ### Variables
@@ -118,9 +122,7 @@ float z = x + 2*y - 16 + 3/y;
 
 ```
 
-<hr />
-
-### Printing and Comments
+## Printing and Comments
 To print something to the screen:
 
 ``` java
@@ -149,11 +151,11 @@ int x = 3; // Set x to 3
 
 <hr />
 
-### Control Flow
+## Control Flow
 Your code reads from top to bottom. However, control flow statements allow you to control the flow of your program. You are able to repeat code until something is true, run different code based on the value of a variable, jump around in your program, and so much more.
 
-#### Boolean Expressions
-The most basic way to "control the flow" of a program is with `if` statements. An `if` statement allows you to branch off based on whether something is true or false. That "something" is called a "boolean expression," something that is reduced to `true` or `false`. Usually, a boolean expression compares the values of two variables.
+### If statements and Boolean Expressions
+The most basic way to "control the flow" of a program is with `if` statements. An `if` statement allows you to branch off based on whether something is true or false. That "something" is called a "boolean expression," a statement that is reduced to `true` or `false`. Usually, a boolean expression *compares* the values of two variables.
 
 Examples:
 
@@ -166,7 +168,7 @@ Examples:
 | Less than or equal to    | `<=`                       | You get it                                              |                     |
 | String equality          | `string1.equals(string2);` | `"apple".equals("apple")` <br> `"apple".equals("orange` | `true` <br> `false` |
 
-#### If statements
+### If statements
 Now, we can make an if statement. Here is the general format for an if statement:
 
 ``` java
@@ -212,15 +214,80 @@ In this example, we first create two strings. One is called `my_name` and it sto
 
 Then, we compare if the two are equal. Because the strings are obviously *not* equal, the code in the `else` will run, printing `"Why would Mario be Peach?"`.
 
-What if we want to test two things? That is why `else if` exists.
+What if we want to test two things? That is why `else if` exists:
+```java
+String my_name = "Alice";
 
-#### While loops
+String my_friends_name = "Bob";
 
-#### For loops
+String your_name = "Eve"; // Change this for a different result
 
-<hr />
+if (my_name.equals(my_friends_name)) {
+    System.out.println("I have the same name as my friend");
+} else if (my_name.equals(your_name)) {
+    System.out.println("I guess we have the same name"); // This will run with your_name = "Alice"
+} else {
+    System.out.println("Looks like my name (Alice) is unique");
+}
+```
 
-### Resources
+First, the if statement will check the first condition: `my_name.equals(my_friends_name)`. If this statement is true, then it will print "I have the same name as my friend", and the if statement will end (meaning, none of the other branches of the if statement will even be considered (the `else if` and the `else`)).
+
+If the first condition is false, meaning if `my_name` is NOT equal to `my_friends_name`, then Java will check the second condition: `my_name.equals(your_name)`. The process repeats. If this condition is true, then "I guess we have the same name" will print, and the `else` will not run.
+
+If the second condition is false, then the code in the `else` will run, printing "Looks like my name (Alice) is unique".
+
+You can chain an infinite number of `else if`s together:
+```java
+if (my_name.equals(my_friends_name)) {
+    System.out.println("I have the same name as my friend");
+} else if (my_name.equals(your_name)) {
+    System.out.println("I guess we have the same name"); // This will run with your_name = "Alice"
+} else {
+    System.out.println("Looks like my name (Alice) is unique");
+}
+```
+
+
+### For and While loops
+These aren't too important, and you shouldn't use them unless you have a very good reason to use them in FTC.
+
+Briefly, a while loop runs the code within it until a given condition is false. Example:
+```java
+while (condition) {
+    // This code will run only when the condition is true.
+}
+
+while (10+5 == 15) {
+    // This code will run FOREVER, because 10+5 is always equal to 15.
+}
+```
+
+Try to think about how many times this loop will run until it stops:
+```java
+int i = 0;
+while (i != 5) {
+    i++; // This is a nicer syntax for "i = i + 1;"
+}
+```
+
+Correct answer: 5. First, we set an integer `i` to equal `0`. Then, inside a while loop, we increment `i` until `i` equals `5`. When `i` equals `5`, then the loop will stop, because the condition `i != 5` will be false.
+
+/* TODO: Explain for loops */
+
+### Arrays
+TODO
+
+### Functions, methods, and classes
+TODO
+
+## Coding FTC Robots
+TODO NEXT
+
+## Phones
+TODO
+
+## Resources
 Here are some good FTC resources:
 
 [FTC Wiki](https://github.com/FIRST-Tech-Challenge/FtcRobotController/wiki)
@@ -235,3 +302,8 @@ All the FTC Java code, and some more resources are there in the readme.
 [EXAMPLE CODE](https://github.com/trc492/FtcSamples/tree/master/FtcSampleCode/src/main/java/samples) GREAT sample code for everything you'll ever need to do (well, almost). Use it.
 
 [MORE EXAMPLE CODE](https://github.com/trc492/FtcSamples/tree/master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples) More sample code (from the same repo).
+
+
+# Note to self: tinker with
+https://github.com/MatiasGoldfeld/Team4654-Robot-Simulator
+https://github.com/Beta8397/virtual_robot

@@ -22,15 +22,29 @@ import java.util.*;
 
 // The @TeleOp allows you to set the robot name that will appear on the phone
 @TeleOp(name="Robot Name", group="Examples")
-public class OctoBot extends OpMode {
+public class OctoBot extends OpMode { 
+    // Note on the line above: the classname (OctoBot) must be the same as the filename
+    // (without the .java).
 
-    /* -- GLOBAL VARIABLES -- */
+    /* -- GLOBAL VARIABLES (FIELDS) -- */
 
     /*
-        Here is where you declare all global variables
-        or any data that your robot needs. These data points are called "fields"
-        You also declare all of the motors and sensors here.
-        anything and everything that needs to be controlled by the code.
+        Here is where you declare all global variables,
+        or any data that your robot needs. These data points are called "fields".
+        From now on, think of a data point more abstractly. Data is not just a
+        number, but can represent a connection to a motor, or a sensor.
+        Therefore, you also declare all of the motors and sensors here, and
+        anything and everything else that needs to be controlled by the code.
+
+        Remember the syntax for declaring a variable:
+        
+        scope type variablename = value;
+         - scope is either "public" or "private" (almost always you will use private)
+         - type is the type of the variable, which is often times an ftclib class.
+         - variablename is the name of the variable, which could be (almost) anything
+
+         See the Java crash course in the main repo file for more info.
+
     */
 
     // This is helpful so that you can time certain actions.
