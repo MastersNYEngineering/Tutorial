@@ -4,28 +4,16 @@
 This repository/repo (fancy word for a code project on GitHub) serves to teach you everything you need to know about how to code an FTC robot. [This GitHub organization](https://github.com/mastersnyengineering) also has all of the robot code we've written for the past three years. So, if you're ever stuck, look through the past code on the org (warning: it's very spaghetti).
 
 ## Table of Contents
-
-[Getting Started](#Getting)
-
-[Java Crash Course](#java-crash-course)
- * [Variables](#variables)
- * [Printing & Commenting](#printing-and-comments)
- * [Control flow](#control-flow)
- * [Arrays](#arrays)
- * [Functions, Methods, and Classes](#functions-methods-and-classes)
- 
-[Coding FTC Robots](#coding-ftc-robots)
- * Intro
- * Explanation of the basic boilerplate
- * How to do common stuff
- * More useful boilerplate and explanation
- * How to do more common (slightly more advanced) stuff
- 
-[Phones](#Phones)
- * How to use the phones
- * How to set the name (id) of different components
-
-[Resources](#Resources)
+  - [Getting Started](#getting-started)
+    - [Coding - a high-level overview](#coding---a-high-level-overview)
+  - [Java Crash Course](#java-crash-course)
+    - [Variables](#variables)
+    - [For and While loops](#for-and-while-loops)
+    - [Arrays](#arrays)
+    - [Functions, methods, and classes](#functions-methods-and-classes)
+  - [Coding FTC Robots](#coding-ftc-robots)
+  - [Phones](#phones)
+  - [Resources](#resources)
 
 ## Getting Started
 First, you're going to need a code editor, a program that makes it easy to edit source code files. The best code editor is [Visual Studio Code](https://code.visualstudio.com/). It is very easy to download, and will be your best friend for all your coding adventures. Another really great editor is [Sublime Text](https://www.sublimetext.com/), which is more lightweight. If you want to easily run the code you write, you can use [repl.it](https://repl.it) for now.
