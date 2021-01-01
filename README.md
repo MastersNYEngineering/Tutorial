@@ -1,19 +1,25 @@
 
 # FTC Robot Coding Tutorial
 ## Welcome
-This repository/repo (fancy word for a code project on GitHub) serves to teach you everything you need to know about how to code an FTC robot. [This GitHub organization](https://github.com/mastersnyengineering) also has all of the robot code we've written for the past three years. So, if you're ever stuck, look through the past code on the org (warning: it's very spaghetti).
+This repository/repo (fancy word for a code project on GitHub) serves to teach you everything you need to know about how to code an FTC robot. There are two main parts: a Java Crash course, and the FTC programming guide. FTC robots are written in Java, so you can't code robots without knowing some basic Java. Luckily, robot code isn't complicated. You don't need to worry about complex inheritance trees or pointer arithmetic--90% of the code is basic if-statements and function calls. So, the Java crash course only covers the parts of Java that are necessary in coding a functional robot. The second part of this repo is to teach how to actually write FTC robots, not just generic Java. FTC provides a code *library* which allows for easy control of every component of a robot (motors, sensors, controller, etc). Finally, I have included some very helpful resources at the end, which you shold definitely consult frequently. [This GitHub organization](https://github.com/mastersnyengineering) also has all of the robot code we've written since we started with FTC. So, if you're ever stuck, look through the past code on the org.
 
 ## Table of Contents
-  - [Getting Started](#getting-started)
-    - [Coding - a high-level overview](#coding---a-high-level-overview)
-  - [Java Crash Course](#java-crash-course)
-    - [Variables](#variables)
-    - [For and While loops](#for-and-while-loops)
-    - [Arrays](#arrays)
-    - [Functions, methods, and classes](#functions-methods-and-classes)
-  - [Coding FTC Robots](#coding-ftc-robots)
-  - [Phones](#phones)
-  - [Resources](#resources)
+- [FTC Robot Coding Tutorial](#ftc-robot-coding-tutorial)
+  * [Welcome](#welcome)
+  * [Table of Contents](#table-of-contents)
+  * [Getting Started](#getting-started)
+    + [Coding - a high-level overview](#coding---a-high-level-overview)
+  * [Java Crash Course](#java-crash-course)
+    + [Variables](#variables)
+      - [Using Variables](#using-variables)
+  * [Printing and Comments](#printing-and-comments)
+  * [Control Flow](#control-flow)
+    + [If statements and Boolean Expressions](#if-statements-and-boolean-expressions)
+    + [If statements](#if-statements)
+    + [For and While loops](#for-and-while-loops)
+    + [Functions, methods, and classes](#functions--methods--and-classes)
+  * [Resources](#resources)
+- [Note to self: tinker with](#note-to-self--tinker-with)
 
 ## Getting Started
 First, you're going to need a code editor, a program that makes it easy to edit source code files. The best code editor is [Visual Studio Code](https://code.visualstudio.com/). It is very easy to download, and will be your best friend for all your coding adventures. Another really great editor is [Sublime Text](https://www.sublimetext.com/), which is more lightweight. If you want to easily run the code you write, you can use [repl.it](https://repl.it) for now.
@@ -143,13 +149,13 @@ int x = 3; // Set x to 3
 Your code reads from top to bottom. However, control flow statements allow you to control the flow of your program. You are able to repeat code until something is true, run different code based on the value of a variable, jump around in your program, and so much more.
 
 ### If statements and Boolean Expressions
-The most basic way to "control the flow" of a program is with `if` statements. An `if` statement allows you to branch off based on whether something is true or false. That "something" is called a "boolean expression," a statement that is reduced to `true` or `false`. Usually, a boolean expression *compares* the values of two variables.
+The most basic way to "control the flow" of a program is with `if` statements. An `if` statement allows you to branch off based on whether something is true or false. That "something" is called a "boolean expression," a statement that is reduced to `true` or `false`. Usually, a boolean expression *compares* the values of two variables. These are also often called *conditions*.
 
 Examples:
 
 | Operation                | Operator                   | Examples                                                | Value               |
 |--------------------------|----------------------------|---------------------------------------------------------|---------------------|
-| Equality                 | `==`                       | `4 == 4` <br> `2 == 3`                                  | `true` <br> `false` |
+| Numerical Equality       | `==`                       | `4 == 4` <br> `2 == 3`                                  | `true` <br> `false` |
 | Greater than             | `>`                        | `1.9 > 1.12` <br> `100 > 112`                           | `true` <br> `false` |
 | Less than                | `<`                        | `1.12 < 1.16` <br> `4 < 2`                              | `true` <br> `false` |
 | Greater than or equal to | `>=`                       | `4 >= 4` <br> `4 >= 5`                                  | `true` <br> `false` |
@@ -251,32 +257,54 @@ while (10+5 == 15) {
 }
 ```
 
-Try to think about how many times this loop will run until it stops:
+<u>**Exercise**</u><br>
+How many times will this loop run until it stops?
+<details>
+    <summary>See answer</summary>
+    Correct answer: 5. First, we set an integer `i` to equal `0`. Then, inside a while loop, we increment `i` until `i` equals `5`. When `i` equals `5`, then the loop will stop, because the condition `i != 5` will be false.
+</details>
+
+For loops are very similar to while loops. In fact, every for loop *could* be written with a while loop, but for loops are often more convenient for certain jobs. One instance where for loops are often used is when you want to do something a fixed number of times. There is a lot to digest in the syntax, so let's take a look:
 ```java
-int i = 0;
-while (i != 5) {
-    i++; // This is a nicer syntax for "i = i + 1;"
+for (int i = 0; i < 10; i++) {
+    // Code inside
 }
 ```
 
-Correct answer: 5. First, we set an integer `i` to equal `0`. Then, inside a while loop, we increment `i` until `i` equals `5`. When `i` equals `5`, then the loop will stop, because the condition `i != 5` will be false.
+This creates a for loop that will run exactly 10 times. So, whatever code you put inside the for loop will run 10 times. Many/most of the for loops you write will look something like this.
 
-/* TODO: Explain for loops */
+However, there is one more thing going on here: `i`. First, the for loop creates an integer `i`, and sets `i` initially equal to `0`. Know that `i` exists only in the scope of the for loop, meaning you will not be able to use `i` outside of the for loop. Next, you give the for loop a *condition*, just like the conditions [talked about earlier](#if-statements-and-boolean-expressions). This condition is exactly like the condition in a while loop: when the condition is false, the loop stops. So, as long as the condition is true, the loop will continue to run. But you may ask, "Why doesn't the loop run forever if we just set `i=0`? Obviously `0 < 10`, and that condition is always true." This is where the third part of the loop comes in: `i++` (note: `i++` is the same as saying `i = i + 1`, which just increments the value of `i` by `1`). The third part of the loop specifies the code to be run on each iteration of the loop. This is the key difference with for loops. After one full iteration of the loop (so, one time of the code running inside), this `i++` code will run, adding `1` to `i`.
 
-### Arrays
-TODO
+So, `i` is essentially a counter, keeping track of the number of times that the for loop has been run so far. Note that `i` often starts at `0`, but it doesn't have to. `i` is just like a regular integer, except every time the for loop runs, `i` increases by `1`. That is what the `i++` describes.
+
+<u>**Exercise**</u><br>
+What will the following code print?
+```java
+for (int i = 0; i < 6; i++) {
+    System.out.println(i * 2);
+}
+```
+<details>
+    <summary>See answer</summary>
+    Correct answer: this loop will print
+```java
+0
+2
+4
+6
+8
+10
+```
+This is because `i` will be `0`, then `1`, then `2`, then `3`, then `4`, then `5`. The loop prints out `i * 2`.
+</details>
 
 ### Functions, methods, and classes
 TODO
 
-## Coding FTC Robots
-TODO NEXT
-
-## Phones
-TODO
-
 ## Resources
 Here are some good FTC resources:
+
+[OctoBot code](https://github.com/mastersnyengineering/Tutorial/tree/main/code/OctoBot.java). This is a heavily-commented version of last year's OctoBot. There are comments describing what every line does. If you understand this file, then you understand (almost) everything you need to know about coding FTC robots.
 
 [FTC Wiki](https://github.com/FIRST-Tech-Challenge/FtcRobotController/wiki)
 We wouldn't be able to write this guide if it weren't for the Wiki. It has information on literally everything, not just programming. This is also how you learn how to use the phones. Use it.
@@ -287,11 +315,14 @@ Everything you need to know about everything. The documentation is actually pret
 [FTC Java GitHub Repo](https://github.com/FIRST-Tech-Challenge/FtcRobotController)
 All the FTC Java code, and some more resources are there in the readme.
 
-[EXAMPLE CODE](https://github.com/trc492/FtcSamples/tree/master/FtcSampleCode/src/main/java/samples) GREAT sample code for everything you'll ever need to do (well, almost). Use it.
+[Great example code](https://github.com/trc492/FtcSamples/tree/master/FtcSampleCode/src/main/java/samples) Great sample code for everything you'll ever need to do (well, almost).
 
-[MORE EXAMPLE CODE](https://github.com/trc492/FtcSamples/tree/master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples) More sample code (from the same repo).
+[More example code](https://github.com/trc492/FtcSamples/tree/master/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples) More sample code (from the same repo).
 
+The OnBotJava environment is also equipped with an example code folder. That is another great resource.
 
-# Note to self: tinker with
-https://github.com/MatiasGoldfeld/Team4654-Robot-Simulator
-https://github.com/Beta8397/virtual_robot
+These are two simulators which try to simulate the FTC robotics environment. While we are online, these might be helpful.
+[FTC Simulator App 1](https://github.com/MatiasGoldfeld/Team4654-Robot-Simulator)
+
+[FTC Simulator App 2](https://github.com/Beta8397/virtual_robot)
+
